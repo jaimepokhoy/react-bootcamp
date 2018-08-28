@@ -6,14 +6,23 @@ export default class Game extends Component {
         super();
 
         this.state = {
-            grid: ['','','X','','','','O','','']
+            grid: ['','','X','','','','O','',''],
+            xIsNext: true
         }
 
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(index) {
-        console.log(index);
+        const { xIsNext, grid } = this.state;
+        const squares = grid.slice();
+
+        squares[index] = xIsNext ? 'X' : 'O';
+
+        this.setState({
+            grid: squares,
+            xIsNext: !xIsNext
+        });
     }
 
     render() {

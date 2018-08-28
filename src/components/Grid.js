@@ -6,22 +6,18 @@ export default class Grid extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            squares: this.props.grid
-        }
-
         this.renderSquare = this.renderSquare.bind(this);
     }
 
     renderSquare(index) {
         return (
-            <Square onClick={() => this.props.onClick(index)} value={this.state.squares[index]} />
+            <Square onClick={() => this.props.onClick(index)} value={this.props.grid[index]} />
         );
     }
 
     render() {
         return (
-            <div>
+            <div className="board">
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
