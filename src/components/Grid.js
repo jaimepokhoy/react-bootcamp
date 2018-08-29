@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import Square from './Square';
 
 export default class Grid extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.renderSquare = this.renderSquare.bind(this);
-    }
-
     renderSquare(index) {
         return (
             <Square onClick={() => this.props.onClick(index)} value={this.props.grid[index]} />
