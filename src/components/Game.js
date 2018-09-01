@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Grid from './Grid';
 
-export default class Game extends Component {
+import { connect } from 'react-redux';
+import { move } from '../actions';
+
+class Game extends Component {
     constructor() {
         super();
 
@@ -15,48 +18,35 @@ export default class Game extends Component {
     }
 
     handleClick(index) {
-        const { xIsNext, grid, winner } = this.state;
+        const { winner, grid, move } = this.props;
 
         if (winner)
             return;
 
-        const squares = grid.slice();
-
-        squares[index] = xIsNext ? 'X' : 'O';
-
-        const gameWinner = this.checkWinner(squares);
+        move(index);
 
         this.setState({
-            grid: squares,
-            xIsNext: !xIsNext,
-            winner: gameWinner
+            grid
         });
     }
-
-    checkWinner(grid) {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (grid[a] && grid[a] === grid[b] && grid[a] === grid[c])
-                return grid[a];
-        }
-
-        return null;
-    }
-
+    
     render() {
         return (
             <Grid grid={this.state.grid} onClick={this.handleClick} />
         );
     }
 }
+
+const mapStateToProps = ({grid, winner}) => ({
+    grid,
+    winner
+});
+
+const mapDispatchToProps = dispatch => ({
+    move: index => dispatch(move(index))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Game)
