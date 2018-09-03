@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Grid from './Grid';
 
 import { connect } from 'react-redux';
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { move } from '../actions';
 
 class Game extends Component {
@@ -20,27 +21,25 @@ class Game extends Component {
         move(index);
     }
 
-    goToPrevious(turnNumber) {
-        const { move, history } = this.props;
-
-        move(history.slice(0, turnNumber + 1));
-    }
-
     render() {
-        const { grid, history, winner } = this.props;
-
-        const moves = history.map((move, index) => (
-            <li>
-                <a>
-                    Move #{index}
-                </a>
-            </li>)
+        const { history, winner, goBack, goForward } = this.props;
+        const { past, present, future } = history;
+        
+        const moves = [...past, present, ...future].map((move, index) => (
+                    <li key={index}>
+                        <a onClick={() => {
+                            return index < past.length ? goBack(index) : goForward(index - past.length - 1);
+                        }}>
+                            Move #{index}
+                        </a>
+                    </li>
+            )
         );
 
         return (
             <div className="game">
                 <div className="game-board">
-                    <Grid grid={grid} onClick={this.handleClick} />
+                    <Grid grid={present.grid} onClick={this.handleClick} />
                 </div>
                 <div className="game-info">
                     <div>{winner}</div>
@@ -58,7 +57,9 @@ const mapStateToProps = ({ grid, winner, history }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    move: index => dispatch(move(index))
+    move: index => dispatch(move(index)),
+    goBack: turnNumber => dispatch(UndoActionCreators.jumpToPast(turnNumber)),
+    goForward: turnNumber =>  dispatch(UndoActionCreators.jumpToFuture(turnNumber))
 })
 
 export default connect(

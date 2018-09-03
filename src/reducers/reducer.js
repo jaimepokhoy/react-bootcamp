@@ -1,6 +1,9 @@
+import undoable, {
+    distinctState
+} from 'redux-undo'
+
 const defaultState = {
     grid: ['', '', '', '', '', '', '', '', ''],
-    history: [],
     xIsNext: true,
     winner: false
 };
@@ -26,18 +29,16 @@ const checkWinner = grid => {
     return null;
 }
 
-export default (state = defaultState, action) => {
+const game = (state = defaultState, action) => {
     switch (action.type) {
         case 'MOVE':
-            const { xIsNext, grid, history } = state;
-
-            const newGrid = grid;
+            const { xIsNext, grid } = state;
+            const newGrid = [...grid];
             newGrid[action.index] = xIsNext ? 'X' : 'O';
 
             return Object.assign({}, state, {
                 grid: newGrid,
                 xIsNext: !xIsNext,
-                history: [...history, grid],
                 winner: checkWinner(newGrid)
             });
 
@@ -45,3 +46,9 @@ export default (state = defaultState, action) => {
             return state;
     }
 }
+
+const undoableGame = undoable(game, {
+    filter: distinctState()
+});
+
+export default undoableGame;
