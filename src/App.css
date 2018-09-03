@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 180px;
   padding: 20px;
   color: white;
 }
@@ -22,9 +22,23 @@
   font-size: large;
 }
 
+.menu-link {
+  color: white;
+  font-size: large;
+  text-decoration: none;
+  padding: 10px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 .square {

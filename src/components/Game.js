@@ -29,10 +29,12 @@ class Game extends Component {
             grid
         });
     }
-    
+
     render() {
         return (
-            <Grid grid={this.state.grid} onClick={this.handleClick} />
+            <div className="game">
+                <Grid class grid={this.state.grid} onClick={this.handleClick} />
+            </div>
         );
     }
 }
