@@ -15,11 +15,11 @@ class App extends Component {
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Tic Tac Toe</h1>
-            <Link exact={true} to="/" className="menu-link" activeClassName="action">Game</Link>
-            <Link exact={true} to="/about" className="menu-link" activeClassName="action">About</Link>
+            <Link to="/" className="menu-link" activeclassname="action">Game</Link>
+            <Link to="/about" className="menu-link" activeclassname="action">About</Link>
           </header>
-          <Route exact path='/' component={Game} />
           <Route path='/about' component={About} />
+          <Route exact path='/' component={Game} />
         </div>
       </Router>
     );

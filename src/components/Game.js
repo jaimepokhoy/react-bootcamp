@@ -5,43 +5,56 @@ import { connect } from 'react-redux';
 import { move } from '../actions';
 
 class Game extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            grid: ['','','','','','','','',''],
-            xIsNext: true,
-            winner: false
-        }
+    constructor(props) {
+        super(props);
 
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(index) {
-        const { winner, grid, move } = this.props;
+        const { winner, move } = this.props;
 
         if (winner)
             return;
 
         move(index);
+    }
 
-        this.setState({
-            grid
-        });
+    goToPrevious(turnNumber) {
+        const { move, history } = this.props;
+
+        move(history.slice(0, turnNumber + 1));
     }
 
     render() {
+        const { grid, history, winner } = this.props;
+
+        const moves = history.map((move, index) => (
+            <li>
+                <a>
+                    Move #{index}
+                </a>
+            </li>)
+        );
+
         return (
             <div className="game">
-                <Grid class grid={this.state.grid} onClick={this.handleClick} />
+                <div className="game-board">
+                    <Grid grid={grid} onClick={this.handleClick} />
+                </div>
+                <div className="game-info">
+                    <div>{winner}</div>
+                    <ol>{moves}</ol>
+                </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({grid, winner}) => ({
+const mapStateToProps = ({ grid, winner, history }) => ({
     grid,
-    winner
+    winner,
+    history
 });
 
 const mapDispatchToProps = dispatch => ({
