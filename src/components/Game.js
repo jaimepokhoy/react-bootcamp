@@ -13,16 +13,16 @@ class Game extends Component {
     }
 
     handleClick(index) {
-        const { winner, move } = this.props;
+        const { history, move } = this.props;
 
-        if (winner)
+        if (history.present.winner)
             return;
 
         move(index);
     }
 
     render() {
-        const { history, winner, goBack, goForward } = this.props;
+        const { history, goBack, goForward } = this.props;
         const { past, present, future } = history;
         
         const moves = [...past, present, ...future].map((move, index) => (
@@ -37,13 +37,15 @@ class Game extends Component {
         );
 
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Grid grid={present.grid} onClick={this.handleClick} />
-                </div>
-                <div className="game-info">
-                    <div>{winner}</div>
-                    <ol>{moves}</ol>
+            <div>
+                <h3>{present.winner && "Winner: " + present.winner}</h3>
+                <div className="game">
+                    <div className="game-board">
+                        <Grid grid={present.grid} onClick={this.handleClick} />
+                    </div>
+                    <div className="game-info">
+                        <ul>{moves}</ul>
+                    </div>
                 </div>
             </div>
         );
